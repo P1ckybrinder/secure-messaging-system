@@ -180,11 +180,13 @@ const DailyFinds = dynamic(() => import("@/components/features/daily-finds").the
   loading: () => <SectionSkeleton icon={Gift} title="Daily Finds" />,
 })
 
-// Brand showcase is lower priority; keep client-only if it depends on browser APIs.
-const BrandShowcase = dynamic(() => import("@/components/features/brand-showcase").then((mod) => mod.BrandShowcase), {
-  loading: () => <SectionSkeleton icon={Star} title="Top Brands" />,
-  ssr: false,
-})
+// Client component wrapper for brand showcase since it uses ssr: false
+const BrandShowcaseWrapper = dynamic(
+  () => import("@/components/features/brand-showcase-client"),
+  {
+    loading: () => <SectionSkeleton icon={Star} title="Top Brands" />,
+  }
+)
 
 export default async function Home() {
   const [
@@ -264,7 +266,7 @@ return (
             </section>
 
             <section className="rounded-lg bg-white shadow-sm overflow-hidden">
-              <BrandShowcase />
+              <BrandShowcaseWrapper />
             </section>
           </div>
         </div>
